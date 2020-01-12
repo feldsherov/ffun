@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.9)
 
-add_subdirectory(gtest)
+project(feldsherov_fun)
 
+include(cmake/CompileOptions.cmake)
+include(cmake/Logging.cmake)
 include(cmake/Ccache.cmake)
 
-project(feldsherov_fun)
+add_subdirectory(gtest)
+
+add_subdirectory(splay)
