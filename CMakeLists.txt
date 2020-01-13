@@ -7,5 +7,4 @@ include(cmake/Logging.cmake)
 include(cmake/Ccache.cmake)
 
 add_subdirectory(gtest)
-
 add_subdirectory(splay)
