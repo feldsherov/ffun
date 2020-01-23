@@ -9,3 +9,4 @@ include(cmake/Logging.cmake)
 include(cmake/Ccache.cmake)
 
 add_subdirectory(splay)
+add_subdirectory(short_string_optimization)
