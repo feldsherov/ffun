@@ -204,6 +204,250 @@ TEST(Splay, RotateLeft) {
                                       nullptr);
 }
 
+TEST(Splay, ExposeZag) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[2]);
+  /* *
+   *  Expected after Expose(tree[2])
+   *              tree[2]
+   *          /            \
+   *       tree[0]         tree[6]
+   *      /      \
+   *   tree[1]  tree[5]
+   *    /    \
+   * tree[3]  tree[4]
+   *
+   * */
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], nullptr, tree[0],
+                                      tree[6]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[2], tree[1],
+                                      tree[5]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], tree[2], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], tree[0], tree[3],
+                                      tree[4]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], tree[0], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], tree[1], nullptr,
+                                      nullptr);
+}
+
+TEST(Splay, ExposeZig) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[1]);
+  /* *
+   *  Expected after Expose(tree[1])
+   *
+   *          tree[1]
+   *      /            \
+   *   tree[3]         tree[0]
+   *                 /       \
+   *              tree[4]   tree[2]
+   *                        /     \
+   *                      tree[5]  tree[6]
+   * */
+
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], nullptr, tree[3],
+                                      tree[0]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[1], tree[4],
+                                      tree[2]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], tree[0], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], tree[0], tree[5],
+                                      tree[6]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], tree[2], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], tree[2], nullptr,
+                                      nullptr);
+}
+
+TEST(Splay, ExposeZagZig) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[4]);
+  /* *
+   *  Expected after Expose(tree[4])
+   *
+   *          tree[4]
+   *          /      \
+   *       tree[1]   tree[0]
+   *       /           \
+   *   tree[3]        tree[2]
+   *                  /     \
+   *              tree[5]  tree[6]
+   * */
+
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], tree[4], tree[3],
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], nullptr, tree[1],
+                                      tree[0]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[4], nullptr,
+                                      tree[2]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], tree[0], tree[5],
+                                      tree[6]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], tree[2], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], tree[2], nullptr,
+                                      nullptr);
+}
+
+TEST(Splay, ExposeZigZig) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[3]);
+  /* *
+   *  Expected after Expose(tree[1])
+   *
+   *          tree[3]
+   *                 \
+   *                 tree[1]
+   *                     \
+   *                   tree[0]
+   *                 /       \
+   *              tree[4]   tree[2]
+   *                        /     \
+   *                      tree[5]  tree[6]
+   * */
+
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], nullptr, nullptr,
+                                      tree[1]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], tree[3], nullptr,
+                                      tree[0]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[1], tree[4],
+                                      tree[2]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], tree[0], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], tree[0], tree[5],
+                                      tree[6]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], tree[2], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], tree[2], nullptr,
+                                      nullptr);
+}
+
+
+TEST(Splay, ExposeZagZag) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[6]);
+  /* *
+   *  Expected after Expose(tree[6])
+   *
+   *                tree[6]
+   *                 /
+   *              tree[2]
+   *               /
+   *            tree[0]
+   *          /      \
+   *       tree[1]   tree[5]
+   *      /      \
+   *   tree[3]  tree[4]
+   * */
+
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], nullptr, tree[2],
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], tree[6], tree[0],
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[2], tree[1],
+                                      tree[5]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], tree[0], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], tree[0], tree[3],
+                                      tree[4]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], tree[1], nullptr,
+                                      nullptr);
+}
+
+TEST(Splay, ExposeZigZag) {
+  auto tree = GenerateSimpleTree<kTestsSize>();
+  /* *
+   *  State after GenerateSimpleTree<7>()
+   *
+   *              tree[0]
+   *          /            \
+   *       tree[1]         tree[2]
+   *      /      \        /       \
+   *   tree[3]  tree[4] tree[5]   tree[6]
+   * */
+  Expose(tree[5]);
+  /* *
+   *  Expected after Expose(tree[6])
+   *
+   *            tree[5]
+   *          /          \
+   *       tree[0]     tree[2]
+   *         /            \
+   *      tree[1]       tree[6]
+   *      /    \
+   *   tree[3] tree[4]
+   * */
+
+  ExpectNodeNeighbours<Node<int32_t>>("tree[5]", tree[5], nullptr, tree[0],
+                                      tree[2]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[0]", tree[0], tree[5], tree[1],
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[1]", tree[1], tree[0], tree[3],
+                                      tree[4]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[3]", tree[3], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[4]", tree[4], tree[1], nullptr,
+                                      nullptr);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[2]", tree[2], tree[5], nullptr,
+                                      tree[6]);
+  ExpectNodeNeighbours<Node<int32_t>>("tree[6]", tree[6], tree[2], nullptr,
+                                      nullptr);
+}
+
 TEST(Splay, Find) {
   auto tree = GenerateSimpleTree<kTestsSize>();
   auto root = tree[0];
